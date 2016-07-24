@@ -1,0 +1,3 @@
+IPAddress,Name,ClientId,Description,InitialConfigFile,DHCPServer,ScopeId
+10.11.0.10,5400R,64-51-06-79-0c-00,Rserved for 5400R Mobile1st Branch,AdpInitialConfig5400R.cfg,10.101.0.20,10.11.0.0
+10.11.0.11,2920stack,74-46-a0-ff-78-e3,Reserved for 2920 Stack,AdpInitialConfig2920.cfg,10.101.0.20,10.11.0.0

@@ -1,0 +1,12 @@
+
+#File to use powershell to automatically build all required DHCP scopes for lab environment
+
+Add-DhcpServerv4OptionDefinition -Name tftp -OptionId 150 -Type IPv4Address
+
+{%  for scope in dhcpscopes.dhcpscopes %}
+Add-DHCPServerv4Scope -EndRange {{  scope.EndRange }} -Name {{ scope.Name }} -StartRange {{ scope.StartRange }} -SubnetMask {{ scope.SubnetMask }} -State Active
+Set-DHCPServerv4OptionValue -ComputerName {{  dhcpscopes.lab_globals.Server }} -ScopeId {{ scope.ScopeID }} -DnsServer {{ dhcpscopes.lab_globals.DNS }} -DnsDomain {{ dhcpscopes.lab_globals.Domain }} -Router {{ scope.Gateway }}
+Set-DhcpServerv4OptionValue -ComputerName {{  scope.Server }} -ScopeId {{ scope.ScopeID }} -OptionId 66 -Value {{ dhcpscopes.lab_globals.tftp }}
+Set-DhcpServerv4OptionValue -ComputerName {{  scope.Server }} -ScopeId {{ scope.ScopeID }} -OptionId 67 -Value {{ scope.InitialConfig }}
+Set-DhcpServerv4OptionValue -ComputerName {{  scope.Server }} -ScopeId {{ scope.ScopeID }} -OptionId 150 -Value {{ dhcpscopes.lab_globals.CCM }}
+{% endfor %}

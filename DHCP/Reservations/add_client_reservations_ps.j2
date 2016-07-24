@@ -1,0 +1,7 @@
+
+
+{%  for client in reservations %}
+    Add-DhcpServerv4Reservation -ScopeId {{ client.ScopeId }} -IPAddress {{ client.IPAddress }} -ClientId "{{ client.ClientId }}" -Description "{{ client.Description }}"
+    Set-DhcpServerv4OptionValue -ComputerName {{ client.DHCPServer }} -ReservedIP {{ client.IPAddress }} -OptionId 67 -Value {{ client.InitialConfigFile }}
+
+{% endfor %}

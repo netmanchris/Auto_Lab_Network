@@ -1,0 +1,47 @@
+lab_globals:
+   {tftp: 10.101.0.203,
+   DNS: 10.101.0.20,
+   Domain: lab.local,
+   CCM: 10.101.0.1,
+   Server: 10.101.0.20}
+
+dhcpscopes:
+- {Server: 10.101.0.20,
+   ScopeID: 10.11.0.0,
+   Name: MobileFirstVlan1,
+   StartRange: 10.11.0.100,
+   EndRange: 10.11.0.200,
+   SubnetMask: 255.255.255.0,
+   Gateway: 10.11.0.1,
+   InitialConfig: ArubaOsInitialConfig.cfg
+   }
+
+- {Server: 10.101.0.20,
+   ScopeID: 10.12.0.0,
+   Name: CiscoVLAN1,
+   StartRange: 10.12.0.100,
+   EndRange: 10.12.0.200,
+   SubnetMask: 255.255.255.0,
+   Gateway: 10.12.0.1,
+   InitialConfig: CiscoInitialConfig.cfg
+   }
+- {Server: 10.101.0.20,
+   ScopeID: 10.13.0.0,
+   Name: JuniperVLAN1,
+   StartRange: 10.13.0.100,
+   EndRange: 10.13.0.200,
+   SubnetMask: 255.255.255.0,
+   Gateway: 10.13.0.1,
+   InitialConfig: JuniperInitialConfig.cfg
+   }
+
+- {Server: 10.101.0.20,
+   ScopeID: 10.14.0.0,
+   Name: FlexFabricVLAN1,
+   StartRange: 10.14.0.100,
+   EndRange: 10.14.0.200,
+   SubnetMask: 255.255.255.0,
+   Gateway: 10.14.0.1,
+   InitialConfig: CW5InitialConfig.cfg
+   }
+
