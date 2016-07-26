@@ -25,7 +25,7 @@
     type: MSR930
     role: gateway
     oobm:
-    manageip: 1011.10.1
+    manageip: 10.11.10.1
     routerid: 10.11.10.1
     vlantrunks:
     - GigabitEthernet0/1
