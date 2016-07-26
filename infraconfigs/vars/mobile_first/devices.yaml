@@ -1,0 +1,28 @@
+---
+
+
+
+-   sysname: HP-5406Rzl2
+    type: 5406R
+    role: switch
+    oobm:
+    manageip: 10.11.10.3
+    routerid: 10.11.10.3
+    vlantrunks: A1, B23
+    svis:
+    - {description: 5406R Management Interface, vlanid: 10, ifdesc: VLAN10, ipaddress: 10.11.10.3, mask: 255.255.255.0}
+    - {description: 5406R UsersGW Interface, vlanid: 15, ifdesc: VLAN15, ipaddress: 10.11.15.1, mask: 255.255.255.0}
+    - {description: 5406R VoiceGW Interface, vlanid: 16, ifdesc: VLAN16, ipaddress: 10.11.16.1, mask: 255.255.255.0}
+    - {description: 5406R ServersGW Interface, vlanid: 20, ifdesc: VLAN20, ipaddress: 10.11.20.1, mask: 255.255.255.0}
+    modules:
+    - {slot: A, type: j9536a}
+    - {slot: B, type: j9534a}
+    - {slot: C, type: one-06}
+    - {slot: D, type: one-06}
+
+
+-  type: 5120
+
+
+
+

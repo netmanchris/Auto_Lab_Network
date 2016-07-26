@@ -1,0 +1,12 @@
+---
+
+ospf:
+    process: 1
+    area: 0
+    network:
+    - {network: 10.11.0.0, wildcard: 0.0.255.255}
+
+snmp:
+
+    syscontact: admin.lab.local
+    syslocation: lab

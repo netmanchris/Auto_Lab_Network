@@ -1,0 +1,71 @@
+; J9850A Configuration Editor; Created on release #KB.16.01.0007
+
+; Ver #0d:10.91.7c.59.f4.7b.ff.ff.fc.ff.ff.3f.ef:0a
+
+hostname "{{ device.sysname }}"
+
+
+{% for module in device.modules %}
+module {{ module.slot }} type {{  module.type }}
+{%  endfor %}
+
+include-credentials
+
+{% for users in netglobal.users %}
+password manager user-name "{{  users.username }}    plaintext "{{ users.password }}"
+{%  endfor %}
+
+{% for server in netglobal.sflow %}
+sflow {{ server.serverid }} destination {{ server.ipaddress }}
+{%  endfor %}
+
+
+sflow 2 polling A1-A22,B1-B24,C1i-C3i,D1i-D3i 20
+
+sflow 2 sampling A1-A22,B1-B24,C1i-C3i,D1i-D3i 1000
+
+snmp-server community "{{ netglobal.snmp.read }}" unrestricted
+
+snmp-server community "{{  netglobal.snmp.write }}" unrestricted
+
+{%  for server in netglobal.snmp.trap %} }}
+snmp-server host {{ server.target }} community "public"
+{% endfor %} }}
+
+
+oobm
+
+   ip address dhcp-bootp
+
+   exit
+
+vlan 1
+
+   name "DEFAULT_VLAN"
+
+   untagged A1-A22,B1-B24,C1i-C3i,D1i-D3i
+
+   ip address dhcp-bootp
+
+   exit
+
+{%  for interface in device.svis %}
+vlan {{ interface.vlanid }}
+
+   name "{{ interface.description }}
+
+   tagged {{ device.vlantrunks }}
+
+   ip address {{ interface.ipaddress }} {{  interface.mask }}
+
+   exit
+{% endfor %}
+
+spanning-tree
+
+no autorun
+
+no dhcp config-file-update
+
+no dhcp image-file-update
+
