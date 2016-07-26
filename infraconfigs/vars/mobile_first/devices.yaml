@@ -21,7 +21,24 @@
     - {slot: D, type: one-06}
 
 
--  type: 5120
+-   sysname: MSR930
+    type: MSR930
+    role: gateway
+    oobm:
+    manageip: 1011.10.1
+    routerid: 10.11.10.1
+    vlantrunks:
+    - GigabitEthernet0/1
+    svis:
+      - {description: MSR930 Management, vlanid: 10, ifdesc: VLAN10, ipaddress: 10.11.10.1, mask: 255.255.255.0, dhcp: 0}
+      - {description: MSR930 VLAN1, vlanid: 1, ifdesc: VLAN1, ipaddress: 10.11.0.1, mask: 255.255.255.0, dhcp: 1}
+      - {description: MSR930 Users, vlanid: 15, ifdesc: VLAN15, ipaddress: 10.11.15.1, mask: 255.255.255.0, dhcp: 1}
+      - {description: MSR930 Voice, vlanid: 16, ifdesc: VLAN16, ipaddress: 10.11.16.1, mask: 255.255.255.0, dhcp: 1}
+      - {description: MSR930 Servers, vlanid: 20, ifdesc: VLAN20, ipaddress: 10.11.20.1, mask: 255.255.255.0, dhcp: 1}
+    interfaces:
+    - {description: link to 5930, ifdesc: GigabitEthernet0/0, ipaddress: 172.16.0.2 , mask: 255.255.255.252,
+        portmode: route}
+
 
 
 

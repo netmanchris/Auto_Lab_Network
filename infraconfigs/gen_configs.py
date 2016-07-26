@@ -18,7 +18,13 @@ for device in devices:
         template = ENV.get_template("./templates/5406R.j2.")
         #print (template.render(netglobals=netglobals, device=device))
         with open("./Configs/"+device['sysname']+"_"+device['manageip']+".cfg", "w") as file:
-            file.write(template.render(netglobal=netglobal, device=device))
+            file.write(template.render(netglobal=netglobal, device=device, branch=branch))
+    if device['type'] == "MSR930":
+        template = ENV.get_template("./templates/MSR_CW.j2.")
+        #print (template.render(netglobals=netglobals, device=device))
+        with open("./Configs/"+device['sysname']+"_"+device['manageip']+".cfg", "w") as file:
+            file.write(template.render(netglobal=netglobal, device=device, branch=branch))
+
 
 
 # Print dictionary generated from yaml

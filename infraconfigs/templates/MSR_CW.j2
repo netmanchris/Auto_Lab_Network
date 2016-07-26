@@ -1,0 +1,88 @@
+#
+ version 5.20.106, Release 2514P06
+#
+ sysname "{{ device.sysname }}"
+#
+ dhcp relay server-group 0 ip {{ netglobal.dhcp }}
+#
+ domain default enable system
+#
+ dar p2p signature-file flash:/p2p_default.mtd
+#
+ lldp enable
+#
+ port-security enable
+#
+ password-recovery enable
+#{%  for vlan in netglobal.vlans %}
+vlan {{ vlan.id }}
+ description {{ vlan.description }}
+ name {{ vlan.name }}
+#{%  endfor %}
+#
+domain system
+ access-limit disable
+ state active
+ idle-cut disable
+ self-service-url disable
+#
+user-group system
+ group-attribute allow-guest
+#{% for user in netglobal.users %}
+local-user {{ user.username }}
+ password simple {{ user.password }}
+ authorization-attribute level 3
+ service-type telnet
+ service-type web
+#{%  endfor %}
+cwmp
+ undo cwmp enable
+#
+interface Aux0
+ async mode flow
+ link-protocol ppp
+#
+interface Cellular0/0
+ async mode protocol
+ link-protocol ppp
+#
+interface NULL0
+#
+{%  for interface in device.svis %}interface Vlan-interface{{  interface.vlanid }}
+    ip address {{ interface.ipaddress }} {{ interface.mask }}{%  if interface.dhcp == 1 %}
+    dhcp select relay
+    dhcp relay server-select 0{% endif %}
+#{% endfor %}
+{%  for interface in device.interfaces -%}interface {{  interface.ifdesc }}{%  if interface.portmode %}
+    port link-mode {{ interface['portmode'] }}
+    ip address {{  interface.ipaddress }} {{  interface.mask }}
+    ospf network-type p2p {% else %}
+    ip address {{  interface.ipaddress }} {{  interface.mask }}{%  endif %}
+#{% endfor %}
+{% for interface in device.vlantrunks %}interface {{ interface }}
+ port link-mode bridge
+ port link-type trunk
+ port trunk permit vlan all{% endfor %}
+#
+ospf 1 router-id {{ device.routerid }}
+ area {{ branch.ospf.area }}{% for network in branch.ospf.networks %}
+  network {{  network.network }} {{ network.wildcard}}{% endfor %}
+#
+ snmp-agent
+ snmp-agent community read {{ netglobal.snmp.read }}
+ snmp-agent community write {{ netglobal.snmp.write }}{%  for server in netglobal.snmp.trap %}
+ snmp-agent target-host trap address udp-domain {{ server.target }} params securityname  {{ server.community }}
+{% endfor %} snmp-agent sys-info version all
+ undo snmp-agent trap enable voice dial
+#
+ dhcp enable
+#
+ load xml-configuration
+#
+ load tr069-configuration
+#
+user-interface tty 12
+user-interface aux 0
+user-interface vty 0 4
+ authentication-mode scheme
+#
