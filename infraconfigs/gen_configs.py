@@ -15,14 +15,19 @@ with open('./vars/mobile_first/branch_vars.yaml') as inputfile:
 
 for device in devices:
     if device['type'] == "5406R":
-        template = ENV.get_template("./templates/5406R.j2.")
+        template = ENV.get_template("./templates/5406R.j2")
         #print (template.render(netglobals=netglobals, device=device))
         with open("./Configs/"+device['sysname']+"_"+device['manageip']+".cfg", "w") as file:
             file.write(template.render(netglobal=netglobal, device=device, branch=branch))
     if device['type'] == "MSR930":
-        template = ENV.get_template("./templates/MSR_CW.j2.")
+        template = ENV.get_template("./templates/MSR_CW.j2")
         #print (template.render(netglobals=netglobals, device=device))
         with open("./Configs/"+device['sysname']+"_"+device['manageip']+".cfg", "w") as file:
+            file.write(template.render(netglobal=netglobal, device=device, branch=branch))
+    if device['type'] == "HPE2920":
+        template = ENV.get_template("./templates/2920stack.j2")
+        # print (template.render(netglobals=netglobals, device=device))
+        with open("./Configs/" + device['sysname'] + "_" + device['manageip'] + ".cfg", "w") as file:
             file.write(template.render(netglobal=netglobal, device=device, branch=branch))
 
 

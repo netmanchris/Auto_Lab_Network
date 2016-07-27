@@ -18,11 +18,15 @@ no rest-interface
 
 include-credentials
 
-password manager user-name "admin" sha1 "de19965710ae41e93a38fe9bd3b4e0dddefc039b"
+{% for users in netglobal.users %}
+password manager user-name "{{  users.username }}    plaintext "{{ users.password }}"
+{%  endfor %}
 
 power-over-ethernet pre-std-detect ports 1/1-1/24,2/1-2/24
 
-sflow 1 destination 10.101.0.203
+{% for server in netglobal.sflow %}
+sflow {{ server.serverid }} destination {{ server.ipaddress }}
+{%  endfor %}
 
 sflow 1 polling 1/1-1/24,2/1-2/24 20
 
@@ -38,45 +42,38 @@ interface 1/24
 
    exit
 
-snmp-server community "public" unrestricted
+snmp-server community "{{ netglobal.snmp.read }}" unrestricted
 
-snmp-server community "private" unrestricted
+snmp-server community "{{  netglobal.snmp.write }}" unrestricted
+{%  for server in netglobal.snmp.trap %}
+snmp-server host {{ server.target }} community "{{ server.community }}"
+{% endfor %}
+snmp-server contact "{{ branch.snmp.syscontact }}" location "{{ branch.snmp.syslocation }}"
 
-snmp-server host 10.3.10.220 community "public"
-
-snmp-server host 10.3.10.222 community "public"
-
-snmp-server host 10.3.10.230 community "public"
-
-snmp-server host 10.3.10.235 community "public"
-
-snmp-server host 10.101.0.202 community "public"
-
-snmp-server contact "kontrol.issues@gmail.com" location "Somewhere Cold"
-
-snmpv3 engineid "00:00:00:0b:00:00:74:46:a0:ff:78:e3"
-
+{% if device.openflow %}
 openflow
 
-   controller-id 1 ip 10.3.10.221 controller-interface vlan 10
+   controller-id {{ device.openflow.controllerid }} ip {{ device.openflow.controllerip }} controller-interface vlan {{ device.openflow.controllerinterfacevlan }}
 
-   instance "users"
+    {% for instance in device.openflow.instances %}
+   instance "{{ instance.name }}"
 
-      member vlan 15
+      member vlan {{ instance.membervlan }}
 
-      controller-id 1
+      controller-id {{ instance.controllerid }}
 
-      version 1.3
+      version {{ instance.version }}
 
-      connection-interruption-mode fail-standalone
+      connection-interruption-mode {{ instance.connectioninterruptionmode }}
 
       enable
 
-      exit
+      exit{% endfor %}
 
    enable
 
    exit
+{% endif %}
 
 oobm
 
@@ -110,45 +107,17 @@ vlan 1
 
    exit
 
-vlan 2
+{%  for interface in device.svis %}
+vlan {{ interface.vlanid }}
 
-   name "TenantABC"
+   name "{{ interface.description }}
 
-   no ip address
+   tagged {{ device.vlantrunks }}
 
-   exit
-
-vlan 10
-
-   name "mgmt"
-
-   tagged 1/1-1/24,2/1-2/24
-
-   ip address 10.11.10.2 255.255.255.0
+   ip address {{ interface.ipaddress }} {{  interface.mask }}
 
    exit
-
-vlan 15
-
-   name "users"
-
-   untagged 1/1-1/12,2/1-2/12
-
-   tagged 1/24
-
-   no ip address
-
-   exit
-
-vlan 16
-
-   name "phones"
-
-   tagged 1/24
-
-   no ip address
-
-   exit
+{% endfor %}
 
 spanning-tree
 

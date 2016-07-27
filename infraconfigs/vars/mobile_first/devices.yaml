@@ -2,7 +2,6 @@
 
 
 ###Mobile_First Branch Devices
-
 -   sysname: HP-5406Rzl2
     type: 5406R
     role: switch
@@ -22,7 +21,7 @@
     - {slot: D, type: one-06}
 
 -   sysname: HPE-2920
-    type: 2920
+    type: HPE2920
     role: switch
     oobm:
     manageip: 10.11.10.2
@@ -33,6 +32,12 @@
     stacking:
     - {member : 1, type: J9727A, macaddress: 7446a0-ff78c0 }
     - {member : 2, type: J9727A, macaddress: 7446a0-ffc440 }
+    openflow:
+      controllerid: 1
+      controllerip: 10.3.10.221
+      controllerinterfacevlan: 20
+      instances:
+      - {name: users, membervlan: 15, controllerid: 1, version: 1.3, connectioninterruptionmode: fail-standalone}
 
 
 -   sysname: MSR930
