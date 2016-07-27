@@ -4,21 +4,14 @@
 
 hostname "{{ device.sysname }}"
 
-
 {% for module in device.modules %}
 module {{ module.slot }} type {{  module.type }}
 {%  endfor %}
-
 include-credentials
-
 {% for users in netglobal.users %}
-password manager user-name "{{  users.username }}    plaintext "{{ users.password }}"
-{%  endfor %}
-
+password manager user-name "{{  users.username }}    plaintext "{{ users.password }}"{%  endfor %}
 {% for server in netglobal.sflow %}
-sflow {{ server.serverid }} destination {{ server.ipaddress }}
-{%  endfor %}
-
+sflow {{ server.serverid }} destination {{ server.ipaddress }}{%  endfor %}
 
 sflow 2 polling A1-A22,B1-B24,C1i-C3i,D1i-D3i 20
 
@@ -48,14 +41,14 @@ vlan 1
 
    exit
 
-{%  for interface in device.svis %}
-vlan {{ interface.vlanid }}
+{%  for vlan in netglobal.vlans %}
+vlan {{ vlan.id }}
 
-   name "{{ interface.description }}
+   name "{{ vlan.name }}
 
    tagged {{ device.vlantrunks }}
-
-   ip address {{ interface.ipaddress }} {{  interface.mask }}
+    {% for interface in device.svis %}{%  if interface.vlanid == vlan.id %}
+   ip address {{ interface.ipaddress }} {{  interface.mask }}{% endif %}{% endfor %}
 
    exit
 {% endfor %}

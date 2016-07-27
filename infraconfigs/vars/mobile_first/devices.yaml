@@ -29,6 +29,7 @@
     vlantrunks: 1/1-1/24,2/1-2/24
     svis:
     - {description: 2920 Management Interface, vlanid: 10, ifdesc: VLAN10, ipaddress: 10.11.10.2, mask: 255.255.255.0}
+
     stacking:
     - {member : 1, type: J9727A, macaddress: 7446a0-ff78c0 }
     - {member : 2, type: J9727A, macaddress: 7446a0-ffc440 }

@@ -25,8 +25,7 @@ password manager user-name "{{  users.username }}    plaintext "{{ users.passwor
 power-over-ethernet pre-std-detect ports 1/1-1/24,2/1-2/24
 
 {% for server in netglobal.sflow %}
-sflow {{ server.serverid }} destination {{ server.ipaddress }}
-{%  endfor %}
+sflow {{ server.serverid }} destination {{ server.ipaddress }}{%  endfor %}
 
 sflow 1 polling 1/1-1/24,2/1-2/24 20
 
@@ -107,15 +106,15 @@ vlan 1
 
    exit
 
-{%  for interface in device.svis %}
-vlan {{ interface.vlanid }}
+{%  for vlan in netglobal.vlans %}
+vlan {{ vlan.id }}
 
-   name "{{ interface.description }}
+   name "{{ vlan.name }}
 
    tagged {{ device.vlantrunks }}
-
-   ip address {{ interface.ipaddress }} {{  interface.mask }}
-
+    {% for interface in device.svis %}{%  if interface.vlanid == vlan.id %}
+   ip address {{ interface.ipaddress }} {{  interface.mask }}{% endif %}
+    {% endfor %}
    exit
 {% endfor %}
 
