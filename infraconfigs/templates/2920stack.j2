@@ -1,0 +1,162 @@
+; hpStack_WB Configuration Editor; Created on release #WB.16.01.0004
+
+; Ver #0b:34.59.14.29.eb.8f.fc.f3.ff.37.2d:d5
+
+
+
+stacking
+
+   member 1 type "J9727A" mac-address 7446a0-ff78c0
+
+   member 2 type "J9727A" mac-address 7446a0-ffc440
+
+   exit
+
+hostname "{{ device.sysname }}"
+
+no rest-interface
+
+include-credentials
+
+password manager user-name "admin" sha1 "de19965710ae41e93a38fe9bd3b4e0dddefc039b"
+
+power-over-ethernet pre-std-detect ports 1/1-1/24,2/1-2/24
+
+sflow 1 destination 10.101.0.203
+
+sflow 1 polling 1/1-1/24,2/1-2/24 20
+
+sflow 1 sampling 1/1-1/24,2/1-2/24 1000
+
+ip default-gateway 10.10.10.1
+
+ip route 0.0.0.0 0.0.0.0 10.11.10.1
+
+interface 1/24
+
+   name "2920 - 3800_2"
+
+   exit
+
+snmp-server community "public" unrestricted
+
+snmp-server community "private" unrestricted
+
+snmp-server host 10.3.10.220 community "public"
+
+snmp-server host 10.3.10.222 community "public"
+
+snmp-server host 10.3.10.230 community "public"
+
+snmp-server host 10.3.10.235 community "public"
+
+snmp-server host 10.101.0.202 community "public"
+
+snmp-server contact "kontrol.issues@gmail.com" location "Somewhere Cold"
+
+snmpv3 engineid "00:00:00:0b:00:00:74:46:a0:ff:78:e3"
+
+openflow
+
+   controller-id 1 ip 10.3.10.221 controller-interface vlan 10
+
+   instance "users"
+
+      member vlan 15
+
+      controller-id 1
+
+      version 1.3
+
+      connection-interruption-mode fail-standalone
+
+      enable
+
+      exit
+
+   enable
+
+   exit
+
+oobm
+
+   ip address 10.101.0.226 255.255.255.0
+
+   ip default-gateway 10.101.0.1
+
+   member 1
+
+      ip address dhcp-bootp
+
+      exit
+
+   member 2
+
+      ip address dhcp-bootp
+
+      exit
+
+   exit
+
+vlan 1
+
+   name "DEFAULT_VLAN"
+
+   no untagged 1/1-1/12,2/1-2/12
+
+   untagged 1/13-1/24,2/13-2/24
+
+   no ip address
+
+   exit
+
+vlan 2
+
+   name "TenantABC"
+
+   no ip address
+
+   exit
+
+vlan 10
+
+   name "mgmt"
+
+   tagged 1/1-1/24,2/1-2/24
+
+   ip address 10.11.10.2 255.255.255.0
+
+   exit
+
+vlan 15
+
+   name "users"
+
+   untagged 1/1-1/12,2/1-2/12
+
+   tagged 1/24
+
+   no ip address
+
+   exit
+
+vlan 16
+
+   name "phones"
+
+   tagged 1/24
+
+   no ip address
+
+   exit
+
+spanning-tree
+
+no autorun
+
+no dhcp config-file-update
+
+no dhcp image-file-update
+
+
+

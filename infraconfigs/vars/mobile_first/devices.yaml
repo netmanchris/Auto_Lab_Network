@@ -1,6 +1,7 @@
 ---
 
 
+###Mobile_First Branch Devices
 
 -   sysname: HP-5406Rzl2
     type: 5406R
@@ -20,6 +21,19 @@
     - {slot: C, type: one-06}
     - {slot: D, type: one-06}
 
+-   sysname: HPE-2920
+    type: 2920
+    role: switch
+    oobm:
+    manageip: 10.11.10.2
+    routerid: 10.11.10.2
+    vlantrunks: 1/1-1/24,2/1-2/24
+    svis:
+    - {description: 2920 Management Interface, vlanid: 10, ifdesc: VLAN10, ipaddress: 10.11.10.2, mask: 255.255.255.0}
+    stacking:
+    - {member : 1, type: J9727A, macaddress: 7446a0-ff78c0 }
+    - {member : 2, type: J9727A, macaddress: 7446a0-ffc440 }
+
 
 -   sysname: MSR930
     type: MSR930
@@ -36,10 +50,4 @@
       - {description: MSR930 Voice, vlanid: 16, ifdesc: VLAN16, ipaddress: 10.11.16.1, mask: 255.255.255.0, dhcp: 1}
       - {description: MSR930 Servers, vlanid: 20, ifdesc: VLAN20, ipaddress: 10.11.20.1, mask: 255.255.255.0, dhcp: 1}
     interfaces:
-    - {description: link to 5930, ifdesc: GigabitEthernet0/0, ipaddress: 172.16.0.2 , mask: 255.255.255.252,
-        portmode: route}
-
-
-
-
-
+    - {description: link to 5900, ifdesc: GigabitEthernet0/0, ipaddress: 172.16.0.2 , mask: 255.255.255.252,  portmode: route}

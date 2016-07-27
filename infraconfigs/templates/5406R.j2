@@ -30,6 +30,8 @@ snmp-server community "{{  netglobal.snmp.write }}" unrestricted
 {%  for server in netglobal.snmp.trap %}
 snmp-server host {{ server.target }} community "{{ server.community }}"
 {% endfor %}
+snmp-server contact "{{ branch.snmp.syscontact }}" location "{{ branch.snmp.syslocation }}"
+
 oobm
 
    ip address dhcp-bootp
